@@ -1,16 +1,32 @@
 package edu.iu.c322.InvoicingService.model;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
-
+@Entity
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private double total;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
     private InvoiceItem invoiceItem;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
     private Payment payment;
     private Long customerId;
-    private ShippingAddress shippingAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address shippingAddress;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+
     private List<Item> items;
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Long getCustomerId() {
         return customerId;
@@ -20,11 +36,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public ShippingAddress getShippingAddress() {
+    public Address getShippingAddress() {
         return shippingAddress;
     }
 
-    public void setShippingAddress(ShippingAddress shippingAddress) {
+    public void setShippingAddress(Address shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 

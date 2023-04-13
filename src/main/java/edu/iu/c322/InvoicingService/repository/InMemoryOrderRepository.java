@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class OrderRepository {
+public class InMemoryOrderRepository {
 
     private List<Order> orders = new ArrayList<>();
 
@@ -53,7 +53,6 @@ public class OrderRepository {
                 .filter(order -> order.getCustomerId().equals(id))
                 .findFirst()
                 .orElse(null);
-
     }
 }
 

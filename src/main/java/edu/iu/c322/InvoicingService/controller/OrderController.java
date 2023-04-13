@@ -3,7 +3,7 @@ package edu.iu.c322.InvoicingService.controller;
 import edu.iu.c322.InvoicingService.OrderDeserializer;
 import edu.iu.c322.InvoicingService.model.*;
 import edu.iu.c322.InvoicingService.repository.InvoiceRepository;
-import edu.iu.c322.InvoicingService.repository.OrderRepository;
+import edu.iu.c322.InvoicingService.repository.InMemoryOrderRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +21,12 @@ import java.util.List;
 @Validated
 public class OrderController {
 
-    private final OrderRepository orderRepository;
+    private final InMemoryOrderRepository orderRepository;
     private final OrderDeserializer orderDeserializer;
     private final InvoiceRepository invoiceRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository, InvoiceRepository invoiceRepository,
+    public OrderController(InMemoryOrderRepository orderRepository, InvoiceRepository invoiceRepository,
                            OrderDeserializer orderDeserializer) {
         this.orderRepository = orderRepository;
         this.orderDeserializer = orderDeserializer;
@@ -42,8 +42,8 @@ public class OrderController {
             invoiceItem.setCustomerId(order.getCustomerId());
             invoiceItem.setStatus("Ready to ship");
             invoiceItem.setOn(new Date());
-            invoiceItem.setAddress(order.getShippingAddress());
-            invoiceItem.setItems(order.getItems());
+//            invoiceItem.setAddress(order.getShippingAddress());
+//            invoiceItem.setItems(order.getItems());
             order.setInvoiceItem(invoiceItem);
             invoiceRepository.create(invoiceItem);
             long id = orderRepository.create(order);
@@ -54,7 +54,7 @@ public class OrderController {
     }
 
     private boolean validateOrder(Order order) {
-        ShippingAddress address = order.getShippingAddress();
+        Address address = order.getShippingAddress();
         Payment pay = order.getPayment();
         String state = address.getState().trim();
         String city = address.getCity().trim();

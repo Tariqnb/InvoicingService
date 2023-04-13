@@ -1,11 +1,19 @@
 package edu.iu.c322.InvoicingService.model;
 
 import edu.iu.c322.InvoicingService.model.Address;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String method;
     private String number;
-    private BillingAddress billingAddress;
+    private Address billingAddress;
 
     public String getMethod() {
         return method;
@@ -23,11 +31,11 @@ public class Payment {
         this.number = number;
     }
 
-    public BillingAddress getBillingAddress() {
+    public Address getBillingAddress() {
         return billingAddress;
     }
 
-    public void setBillingAddress(BillingAddress billingAddress) {
+    public void setBillingAddress(Address billingAddress) {
         this.billingAddress = billingAddress;
     }
 }
